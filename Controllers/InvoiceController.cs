@@ -1,7 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SBA.Expense.CommandHandlers;
 using SBA.Expense.Commands;
+using SBA.Expense.Common;
+using SBA.Expense.Models;
+using SBA.Expense.ReadModels.Commands;
 
 namespace SBA.Expense.Controllers
 {
@@ -10,20 +16,19 @@ namespace SBA.Expense.Controllers
     public class InvoiceController : ControllerBase
     {
 
-        public InvoiceCommandHandler commandHandler;
+        IInvoiceMediatorService mediator;
         private readonly ILogger<InvoiceController> _logger;
 
-        public InvoiceController(ILogger<InvoiceController> logger)
+        public InvoiceController(ILogger<InvoiceController> logger, IInvoiceMediatorService mediator)
         {
+            this.mediator= mediator;
             _logger = logger;
-            commandHandler= new InvoiceCommandHandler();
         }
 
-        [HttpPost]
-        public void AddInvoice([FromQuery] string username){
-            AddInvoiceEntry command = new AddInvoiceEntry();
-            command.UserID= username;
-            commandHandler.Handle(command);
+        [HttpGet]
+        public async Task AddInvoice([FromQuery] string username){
+            var r = await mediator.GetInvoices(username);
+            
         }
     }
 }

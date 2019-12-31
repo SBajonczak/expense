@@ -1,21 +1,26 @@
 using System.Collections.Generic;
 using SBA.Expense.Commands;
+using SBA.Expense.Models;
 using SBA.Expense.ReadModels;
 
 namespace SBA.Expense.CommandHandlers
 {
-    public class InvoiceCommandHandler : ICommandHandler<AddInvoiceEntry>
+    public class InvoiceCommandHandler : IWriteCommandHandler<AddInvoiceEntry>
     {
 
-        public List<InvoiceDetails> Data;
-        public InvoiceCommandHandler()
+        InvoiceContext context;
+        public InvoiceCommandHandler(InvoiceContext context)
         {
-            this.Data = new List<InvoiceDetails>();
+            this.context= context;
         }
 
-        public void Handle(AddInvoiceEntry command)
+        public async void Handle(AddInvoiceEntry command)
         {
-            Data.Add(command.ToInvoiceDetails());
+
+            var invoice = command.ToInVoice();
+            await context.Invoices.AddAsync(command.ToInVoice());
+            
+
         }
     }
 }

@@ -8,19 +8,19 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System.Threading;
 using System;
 using System.Threading.Tasks;
+using SBA.Expense.ReadModels;
+using Microsoft.EntityFrameworkCore;
+using SBA.Expense.Models;
+using MediatR;
+using MediatR.Pipeline;
+using System.IO;
+using SBA.Expense.ReadModels.Commands;
+using System.Reflection;
+using SBA.Expense.Common;
 
 namespace SBA.Expense
 {
 
-    public class RandomHealthCheck
-          : IHealthCheck
-    {
-        public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult(HealthCheckResult.Healthy());
-        }
-
-    }
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -33,15 +33,16 @@ namespace SBA.Expense
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHealthChecks().AddCheck<RandomHealthCheck>("random");
-            
-            services.AddHealthChecksUI(setupSettings: setup =>
-            {
-                setup.AddHealthCheckEndpoint("invoices", "http://localhost:5000/healthcheck");
-            });
 
+
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddTransient<IInvoiceMediatorService, INvoiceMediatorService>();
+
+            // services.AddDbContext<InvoiceContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:InvoiceDb"]));
             services.AddControllers();
         }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -52,10 +53,8 @@ namespace SBA.Expense
             }
             app.UseRouting();
             app.UseAuthorization();
-            app.UseHealthChecks("/healthcheck");
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHealthChecksUI();
                 endpoints.MapControllers();
             });
         }

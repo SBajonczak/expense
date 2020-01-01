@@ -3,20 +3,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using HealthChecks.UI.Client;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using System.Threading;
-using System;
-using System.Threading.Tasks;
-using SBA.Expense.ReadModels;
 using Microsoft.EntityFrameworkCore;
 using SBA.Expense.Models;
 using MediatR;
-using MediatR.Pipeline;
-using System.IO;
-using SBA.Expense.ReadModels.Commands;
 using System.Reflection;
-using SBA.Expense.Common;
+using SBA.Expense.Queries;
+using SBA.Expense.Commands.Services;
+using SBA.Expense.Queries.Sevices;
 
 namespace SBA.Expense
 {
@@ -34,11 +27,12 @@ namespace SBA.Expense
         public void ConfigureServices(IServiceCollection services)
         {
 
+            //services.AddDbContext<InvoiceContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:InvoiceDb"]));
+            services.AddDbContext<InvoiceContext>(opts => opts.UseInMemoryDatabase(databaseName: "InvoiceDB"));
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddTransient<IInvoiceMediatorService, INvoiceMediatorService>();
-
-            // services.AddDbContext<InvoiceContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:InvoiceDb"]));
+            services.AddTransient<IInvoiceQueryService, InvoiceQueryService>();
+            services.AddTransient<IInvoiceCommandService, InvoiceCommandService>();
             services.AddControllers();
         }
 

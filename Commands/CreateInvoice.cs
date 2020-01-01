@@ -25,7 +25,8 @@ namespace SBA.Expense.Commands
         public Invoice ToInVoice()
         {
             Invoice item = new Invoice();
-            item.ID = this.Id;
+            item.ID = Guid.NewGuid();
+            item.GroupID = this.Id;
             item.UserId = this.UserID;
             item.Date = this.Date;
             return item;

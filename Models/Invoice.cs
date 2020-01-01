@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using SBA.Expense.Common;
 
 namespace SBA.Expense.Models
 {
-    public class Invoice
+    public class Invoice:IEventSourceingObject
     {
         public enum State
         {
@@ -18,7 +19,9 @@ namespace SBA.Expense.Models
         public State InvoiceState { get; set; }
         public decimal Total { get; set; }
 
-        public List<BillInformation> Bills{get;set;} 
+        public List<BillInformation> Bills{get;set;}
+        public Guid GroupID {get;set;}
+        public int Index { get;set; }
 
         public Invoice(){
             this.Bills= new List<BillInformation>();

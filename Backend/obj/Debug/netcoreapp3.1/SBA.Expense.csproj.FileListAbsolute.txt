@@ -142,3 +142,7 @@ E:\sourcen\SBA.Expense\Backend\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcorea
 E:\sourcen\SBA.Expense\Backend\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 E:\sourcen\SBA.Expense\Backend\obj\Debug\netcoreapp3.1\SBA.Expense.RazorTargetAssemblyInfo.cache
 E:\sourcen\SBA.Expense\Backend\obj\Debug\netcoreapp3.1\SBA.Expense.csproj.CopyComplete
+E:\sourcen\SBA.Expense\Backend\bin\Debug\netcoreapp3.1\Microsoft.Azure.WebJobs.Host.dll
+E:\sourcen\SBA.Expense\Backend\bin\Debug\netcoreapp3.1\Microsoft.Azure.WebJobs.dll
+E:\sourcen\SBA.Expense\Backend\bin\Debug\netcoreapp3.1\Microsoft.Azure.WebJobs.Extensions.Storage.dll
+E:\sourcen\SBA.Expense\Backend\bin\Debug\netcoreapp3.1\Microsoft.WindowsAzure.Storage.dll

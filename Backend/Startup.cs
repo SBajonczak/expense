@@ -7,10 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using SBA.Expense.Models;
 using MediatR;
 using System.Reflection;
-using SBA.Expense.Queries;
-using SBA.Expense.Commands.Services;
-using SBA.Expense.Queries.Sevices;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using SBA.Expense.Repos;
 
 namespace SBA.Expense
 {
@@ -29,11 +27,16 @@ namespace SBA.Expense
         {
 
             //services.AddDbContext<InvoiceContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:InvoiceDb"]));
-            services.AddDbContext<InvoiceContext>(opts => opts.UseInMemoryDatabase(databaseName: "InvoiceDB").ConfigureWarnings(_=>_.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
+            services.AddDbContext<InvoiceContext>(opts => opts.UseInMemoryDatabase(databaseName: "InvoiceDB").ConfigureWarnings(_ => _.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddTransient<IInvoiceQueryService, InvoiceQueryService>();
-            services.AddTransient<IInvoiceCommandService, InvoiceCommandService>();
+
+
+            services.AddSingleton<IAzureBlobRepo, AzureBlobRepo>(e =>
+            {
+                return new AzureBlobRepo(Configuration["ConnectionString:AzureStorage"]);
+            });
+
             services.AddControllers();
         }
 

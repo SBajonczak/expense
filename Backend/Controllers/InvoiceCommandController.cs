@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SBA.Expense.Commands;
-using SBA.Expense.Commands.Services;
-using SBA.Expense.Models;
-using SBA.Expense.Queries.Sevices;
 
 namespace SBA.Expense.Controllers
 {
@@ -14,14 +11,13 @@ namespace SBA.Expense.Controllers
     public class InvoiceCommandController : ControllerBase
     {
 
-        IInvoiceQueryService queryService;
-        IInvoiceCommandService commandService;
-        private readonly ILogger<InvoiceController> _logger;
+               private readonly ILogger<InvoiceController> _logger;
+        IMediator _mediator;
 
-        public InvoiceCommandController(ILogger<InvoiceController> logger, IInvoiceQueryService queryService, IInvoiceCommandService commandService)
+        public InvoiceCommandController(ILogger<InvoiceController> logger, IMediator mediator)
         {
-            this.commandService = commandService;
-            this.queryService= queryService;
+            this._mediator= mediator;
+
             _logger = logger;
         }
 
@@ -29,9 +25,10 @@ namespace SBA.Expense.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<ActionResult> AddInvoiceEntry([FromBody]CreateInvoice command){
-            return Ok(await commandService.SaveInvoice(command));
+            return Ok(await _mediator.Send(command));
         }
 
-       
+      
+
     }
 }

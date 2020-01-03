@@ -19,11 +19,11 @@ namespace SBA.Expense.Models
         public State InvoiceState { get; set; }
         public decimal Total { get; set; }
 
-        public List<BillInformation> Bills { get; set; }
+        public List<Receipt> Receipts { get; set; }
 
         public Invoice()
         {
-            this.Bills = new List<BillInformation>();
+            this.Receipts = new List<Receipt>();
         }
     }
 }

@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.OData;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SBA.Expense.Commands.Services;
 using SBA.Expense.Models;
-using SBA.Expense.Queries.Sevices;
+using SBA.Expense.Queries;
 
 namespace SBA.Expense.Controllers
 {
@@ -15,13 +13,13 @@ namespace SBA.Expense.Controllers
     public class InvoiceController : Controller
     {
 
-        IInvoiceQueryService queryService;
+        IMediator mediator;
 
         private readonly ILogger<InvoiceController> _logger;
 
-        public InvoiceController(ILogger<InvoiceController> logger, IInvoiceQueryService queryService )
+        public InvoiceController(ILogger<InvoiceController> logger, IMediator mediator )
         {
-            this.queryService = queryService;
+            this.mediator = mediator;
             _logger = logger;
         }
 
@@ -29,7 +27,8 @@ namespace SBA.Expense.Controllers
         [HttpGet]
         public async Task<List<Invoice>> Get([FromQuery] string username)
         {
-            return await queryService.GetInvoices(username);
+     
+            return await mediator.Send(new GetInvoicesForUser(){UserName= username});
         }
     }
 }

@@ -26,8 +26,9 @@ namespace SBA.Expense
         public void ConfigureServices(IServiceCollection services)
         {
 
-            //services.AddDbContext<InvoiceContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:InvoiceDb"]));
-            services.AddDbContext<InvoiceContext>(opts => opts.UseInMemoryDatabase(databaseName: "InvoiceDB").ConfigureWarnings(_ => _.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
+            services.AddDbContext<InvoiceContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:InvoiceDb"]));
+
+            // services.AddDbContext<InvoiceContext>(opts => opts.UseInMemoryDatabase(databaseName: "InvoiceDB").ConfigureWarnings(_ => _.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
 

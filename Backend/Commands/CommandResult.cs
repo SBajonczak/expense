@@ -4,20 +4,26 @@ namespace SBA.Expense.Commands
 {
     public class CommandResult
     {
-        public CommandResult(){
+        public CommandResult()
+        {
 
         }
+        public CommandResult(bool OK, Guid entityID) : this()
+        {
+            this.EntityID = entityID;
+            this.OK = OK;
 
-        public CommandResult(bool OK, string errors, Guid entityID, Guid aggregateID):this(){
-            this.OK= OK;
-            this.Errors = errors;
-            this.EntityID= entityID;
-            this.AggregateID= aggregateID;
         }
-        public Guid EntityID {get;set;}
+        public CommandResult(bool OK, Guid entityID,string errorCode, string message) : this(OK, entityID)
+        {
+            this.ErrorCode = errorCode;
+            this.Errors = message;
+            this.EntityID = entityID;
 
-        public Guid AggregateID {get;set;}
-        public bool OK {get;set;}
-        public string Errors {get;set;}
+        }
+        public Guid EntityID { get; set; }
+        public string ErrorCode { get; set; }
+        public bool OK { get; set; }
+        public string Errors { get; set; }
     }
 }

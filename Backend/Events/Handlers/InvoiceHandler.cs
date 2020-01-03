@@ -23,7 +23,7 @@ namespace SBA.Expense.Events.Handlers
 
         public async Task Handle(InvoiceCreatedEvent notification, CancellationToken cancellationToken)
         {
-          var invoice =  _invoiceRepository.Invoices.SingleOrDefault(_ => _.ID == notification.EntityID &&_.AggregateId == notification.AggregateID);
+          var invoice =  _invoiceRepository.Invoices.SingleOrDefault(_ => _.ID == notification.EntityID);
 
             if (invoice == null)
             {

@@ -4,7 +4,7 @@ using SBA.Expense.Common;
 
 namespace SBA.Expense.Models
 {
-    public class Invoice:IEventSourceingObject
+    public class Invoice 
     {
         public enum State
         {
@@ -19,12 +19,11 @@ namespace SBA.Expense.Models
         public State InvoiceState { get; set; }
         public decimal Total { get; set; }
 
-        public List<BillInformation> Bills{get;set;}
-        public Guid AggregateId {get;set;}
-        public int Index { get;set; }
+        public List<BillInformation> Bills { get; set; }
 
-        public Invoice(){
-            this.Bills= new List<BillInformation>();
+        public Invoice()
+        {
+            this.Bills = new List<BillInformation>();
         }
     }
 }

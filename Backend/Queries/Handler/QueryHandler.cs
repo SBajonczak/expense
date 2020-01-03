@@ -34,6 +34,7 @@ namespace SBA.Expense.Queries.Handler
 
         Task<List<Invoice>> IRequestHandler<GetInvoicesForUser, List<Invoice>>.Handle(GetInvoicesForUser request, CancellationToken cancellationToken)
         {
+            
             var result = this.context.Invoices.Where(_=>_.UserId == request.UserName).ToList();
             return Task.FromResult(result);
         }

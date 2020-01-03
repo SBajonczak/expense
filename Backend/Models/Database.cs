@@ -10,8 +10,16 @@ namespace SBA.Expense.Models
         }
         public InvoiceContext(DbContextOptions<InvoiceContext> options)
        : base(options)
-        { }
+        {
+
+
+         }
+
+
+        public DbSet<EventEntry> EventEntries {get;set;}
+
         public DbSet<Invoice> Invoices { get; set; }
+        
         public DbSet<BillInformation> InvoiceDetails { get; set; }
     }
 }

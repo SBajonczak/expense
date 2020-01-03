@@ -10,6 +10,7 @@ using System.Reflection;
 using SBA.Expense.Queries;
 using SBA.Expense.Commands.Services;
 using SBA.Expense.Queries.Sevices;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace SBA.Expense
 {
@@ -28,7 +29,7 @@ namespace SBA.Expense
         {
 
             //services.AddDbContext<InvoiceContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:InvoiceDb"]));
-            services.AddDbContext<InvoiceContext>(opts => opts.UseInMemoryDatabase(databaseName: "InvoiceDB"));
+            services.AddDbContext<InvoiceContext>(opts => opts.UseInMemoryDatabase(databaseName: "InvoiceDB").ConfigureWarnings(_=>_.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddTransient<IInvoiceQueryService, InvoiceQueryService>();

@@ -25,7 +25,6 @@ namespace SBA.Expense.Commands
         {
             Invoice item = new Invoice();
             item.ID = Guid.NewGuid();
-            item.AggregateId = this.Id;
             item.UserId = this.UserID;
             item.Date = this.Date;
             return item;

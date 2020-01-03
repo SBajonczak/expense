@@ -6,7 +6,7 @@ namespace SBA.Expense.Commands.Services
 {
     public interface IInvoiceCommandService
     {
-        Task SaveInvoice(Guid objectId, string userID, DateTime date);
+        Task<CommandResult> SaveInvoice(CreateInvoice command);
     }
 
     public class InvoiceCommandService : IInvoiceCommandService
@@ -18,9 +18,9 @@ namespace SBA.Expense.Commands.Services
             _mediator = mediator;
         }
 
-        public async Task SaveInvoice(Guid objectID, string userID, DateTime date)
+        public async Task<CommandResult> SaveInvoice(CreateInvoice command)
         {
-            await _mediator.Publish(new CreateInvoice(objectID, userID, date));
+            return await _mediator.Send(command);
         }
     }
 }

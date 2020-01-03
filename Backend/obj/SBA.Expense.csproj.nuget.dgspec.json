@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\sourcen\\SBA.Expense\\SBA.Expense.csproj": {}
+    "E:\\sourcen\\SBA.Expense\\Backend\\SBA.Expense.csproj": {}
   },
   "projects": {
-    "E:\\sourcen\\SBA.Expense\\SBA.Expense.csproj": {
+    "E:\\sourcen\\SBA.Expense\\Backend\\SBA.Expense.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\sourcen\\SBA.Expense\\SBA.Expense.csproj",
+        "projectUniqueName": "E:\\sourcen\\SBA.Expense\\Backend\\SBA.Expense.csproj",
         "projectName": "SBA.Expense",
-        "projectPath": "E:\\sourcen\\SBA.Expense\\SBA.Expense.csproj",
+        "projectPath": "E:\\sourcen\\SBA.Expense\\Backend\\SBA.Expense.csproj",
         "packagesPath": "C:\\Users\\BajonczakSascha\\.nuget\\packages\\",
-        "outputPath": "E:\\sourcen\\SBA.Expense\\obj\\",
+        "outputPath": "E:\\sourcen\\SBA.Expense\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

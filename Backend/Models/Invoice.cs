@@ -20,7 +20,7 @@ namespace SBA.Expense.Models
         public decimal Total { get; set; }
 
         public List<BillInformation> Bills{get;set;}
-        public Guid GroupID {get;set;}
+        public Guid AggregateId {get;set;}
         public int Index { get;set; }
 
         public Invoice(){

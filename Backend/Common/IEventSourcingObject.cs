@@ -3,7 +3,7 @@ using System;
 namespace SBA.Expense.Common{
 
     public interface IEventSourceingObject{
-        Guid GroupID{get;set;}
+        Guid AggregateId{get;set;}
         int Index{get;set;}
         
     }

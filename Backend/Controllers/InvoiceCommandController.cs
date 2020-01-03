@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SBA.Expense.Commands;
 using SBA.Expense.Commands.Services;
 using SBA.Expense.Models;
 using SBA.Expense.Queries.Sevices;
@@ -25,14 +26,12 @@ namespace SBA.Expense.Controllers
         }
 
         [HttpPost]
-        public async Task AddInvoiceEntry([FromBody]Invoice invoice ){
-            await commandService.SaveInvoice(invoice.ID,invoice.UserId, invoice.Date);
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult> AddInvoiceEntry([FromBody]CreateInvoice command){
+            return Ok(await commandService.SaveInvoice(command));
         }
 
-        [HttpGet]
-        public async Task<List<Invoice>> GetInvoicesAsync([FromQuery] string username){
-            var r = await queryService.GetInvoices(username);
-            return r;
-        }
+       
     }
 }

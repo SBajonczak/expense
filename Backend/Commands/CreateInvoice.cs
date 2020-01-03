@@ -5,7 +5,7 @@ using SBA.Expense.Models;
 
 namespace SBA.Expense.Commands
 {
-    public class CreateInvoice : INotification, ICommand
+    public class CreateInvoice : CommandBase<CommandResult>
     {
         public CreateInvoice()
         {
@@ -19,14 +19,13 @@ namespace SBA.Expense.Commands
         }
         public Guid Id { get; set; }
         public string UserID { get; set; }
-        public byte[] InvoiceContent { get; set; }
         public DateTime Date { get; set; }
 
         public Invoice ToInVoice()
         {
             Invoice item = new Invoice();
             item.ID = Guid.NewGuid();
-            item.GroupID = this.Id;
+            item.AggregateId = this.Id;
             item.UserId = this.UserID;
             item.Date = this.Date;
             return item;

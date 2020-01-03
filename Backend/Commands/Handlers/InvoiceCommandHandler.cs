@@ -3,16 +3,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using SBA.Expense.Commands;
+using SBA.Expense.Events;
 using SBA.Expense.Models;
 
 namespace SBA.Expense.Command.Handlers
 {
-    public class InvoiceCommandHandler : INotificationHandler<CreateInvoice>
+    public class InvoiceCommandHandler : IRequestHandler<CreateInvoice,CommandResult>
     {
-
+        IMediator mediator;
         InvoiceContext context;
-        public InvoiceCommandHandler(InvoiceContext context)
+        public InvoiceCommandHandler(InvoiceContext context, IMediator mediator)
         {
+            this.mediator= mediator;
             this.context = context;
         }
 
@@ -21,12 +23,12 @@ namespace SBA.Expense.Command.Handlers
         }
 
 
-        public Task Handle(CreateInvoice notification, CancellationToken cancellationToken)
+        public  async Task<CommandResult> Handle(CreateInvoice notification, CancellationToken cancellationToken)
         {
             var invoice = notification.ToInVoice();
-            if (context.Invoices.Any(_ => _.GroupID == invoice.GroupID))
+            if (context.Invoices.Any(_ => _.AggregateId == invoice.AggregateId))
             {
-                invoice.Index = context.Invoices.Where(_ => _.GroupID == invoice.GroupID).Max(_ => _.Index) + 1;
+                invoice.Index = context.Invoices.Where(_ => _.AggregateId == invoice.AggregateId).Max(_ => _.Index) + 1;
             }
             else
             {
@@ -34,7 +36,11 @@ namespace SBA.Expense.Command.Handlers
             }
             context.Invoices.Add(invoice);
             context.SaveChanges();
-            return Task.FromResult("");
+
+            // publish creation to subscribers
+            await mediator.Publish(new InvoiceCreatedEvent(invoice.ID, invoice.AggregateId, invoice.Date),cancellationToken);
+
+            return new CommandResult(true,string.Empty, invoice.ID, invoice.AggregateId);
         }
     }
 }

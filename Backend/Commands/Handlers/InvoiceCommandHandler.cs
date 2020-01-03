@@ -89,6 +89,7 @@ namespace SBA.Expense.Command.Handlers
                     r.ReferenceBlobAdress = string.Concat(request.UserID, "/", request.FileName);
                     r.InvoiceID = request.InvoiceId;
                     r.UserId = request.UserID;
+                    r.Amount = request.Amount;
                     r.FileName = request.FileName;
                     await context.Receipts.AddAsync(r, cancellationToken);
                     await context.SaveChangesAsync(cancellationToken);

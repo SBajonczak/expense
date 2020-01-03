@@ -2,10 +2,26 @@ version: '3.7'
 
 services:
 
-  sample:
+  expense-api:
+    container_name: expense-api
+    build: 
+      context: ./Backend
+      dockerfile: Dockerfile
+    depends_on: 
+      - mssql
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5000
+    ports:
+      - 5000:5000
+      - 5001:5001
+    networks:
+      - demo-cqrs
+
+  expense-frontend:
     container_name: sba.expense.ui
     build:
-      context: .
+      context: ./Frontend
       dockerfile: Dockerfile
     volumes:
       - '.:/app'

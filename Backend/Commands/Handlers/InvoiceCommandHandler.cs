@@ -34,26 +34,23 @@ namespace SBA.Expense.Command.Handlers
 
         public async Task<CommandResult> Handle(CreateInvoice notification, CancellationToken cancellationToken)
         {
+            var invoice = notification.ToInVoice();
+            if (context.Invoices.Any(_ => _.ID == invoice.ID))
+            {
 
+                return new CommandResult(true, invoice.ID, "ERR-1001", "ID already exists");
+            }
+            if (context.Invoices.Any(_ => _.UserId == invoice.UserId && _.Date == invoice.Date))
+            {
+
+                return new CommandResult(true, invoice.ID, "ERR-1002", "Invoice Entry already exists");
+            }
             context.EventEntries.Add(new EventEntry() { ID = Guid.NewGuid(), Payload = JsonSerializer.Serialize(notification) });
 
             using (var transaction = context.Database.BeginTransaction())
             {
                 try
                 {
-                    var invoice = notification.ToInVoice();
-
-                    if (context.Invoices.Any(_ => _.ID == invoice.ID))
-                    {
-                        await transaction.RollbackAsync(cancellationToken);
-                        return new CommandResult(true, invoice.ID, "ERR-1001", "ID already exists");
-                    }
-                    if (context.Invoices.Any(_ => _.UserId == invoice.UserId && _.Date == invoice.Date))
-                    {
-                        await transaction.RollbackAsync(cancellationToken);
-                        return new CommandResult(true, invoice.ID, "ERR-1002", "Invoice Entry already exists");
-                    }
-
                     await context.Invoices.AddAsync(invoice, cancellationToken);
                     await context.SaveChangesAsync(cancellationToken);
 
@@ -73,6 +70,15 @@ namespace SBA.Expense.Command.Handlers
 
         public async Task<CommandResult> Handle(AttachReceipt request, CancellationToken cancellationToken)
         {
+            if (!context.Invoices.Any(_ => _.ID == request.InvoiceId && _.UserId == request.UserID))
+            {
+                return new CommandResult(false, Guid.Empty, "ERR-1003", $"No invoice found with the given id {request.InvoiceId} for user {request.UserID}");
+            }
+            if (context.Receipts.Any(_ => _.FileName == request.FileName && _.UserId == request.UserID))
+            {
+                return new CommandResult(false, Guid.Empty, "ERR-1003", "File already exists for this user");
+            }
+
             context.EventEntries.Add(new EventEntry() { ID = Guid.NewGuid(), Payload = JsonSerializer.Serialize(request) });
             await this.azureBlobRepo.Store("receipts", request.UserID, request.FileName, new MemoryStream(request.Content));
             using (var transaction = this.context.Database.BeginTransaction())
@@ -88,7 +94,7 @@ namespace SBA.Expense.Command.Handlers
                     await context.SaveChangesAsync(cancellationToken);
                     await transaction.CommitAsync(cancellationToken);
                     // Publish Create Event to subscriber.
-                    await this.mediator.Publish(new ReceiptCreatedEvent(r.ID, r.ReferenceBlobAdress),cancellationToken);
+                    await this.mediator.Publish(new ReceiptCreatedEvent(r.ID, r.ReferenceBlobAdress), cancellationToken);
                     return new CommandResult(true, r.ID);
                 }
                 catch (Exception e)

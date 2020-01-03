@@ -11,12 +11,12 @@ namespace SBA.Expense.Controllers
     public class InvoiceCommandController : ControllerBase
     {
 
-               private readonly ILogger<InvoiceController> _logger;
+        private readonly ILogger<InvoiceController> _logger;
         IMediator _mediator;
 
         public InvoiceCommandController(ILogger<InvoiceController> logger, IMediator mediator)
         {
-            this._mediator= mediator;
+            this._mediator = mediator;
 
             _logger = logger;
         }
@@ -24,11 +24,23 @@ namespace SBA.Expense.Controllers
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult> AddInvoiceEntry([FromBody]CreateInvoice command){
-            return Ok(await _mediator.Send(command));
+        public async Task<ActionResult> AddInvoiceEntry([FromBody]CreateInvoice command)
+        {
+
+            CommandResult result = await _mediator.Send(command);
+            if (result.OK)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+
+
         }
 
-      
+
 
     }
 }

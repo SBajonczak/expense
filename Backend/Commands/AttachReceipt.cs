@@ -21,6 +21,7 @@ namespace SBA.Expense.Commands
         public Guid Id { get; set; }
         public string UserID { get; set; }
         public Guid InvoiceId { get; set; }
+        public decimal Amount {get;set;}
         public byte[] Content{get;set;}
 
         public string FileName {get;set;}

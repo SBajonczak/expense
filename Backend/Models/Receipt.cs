@@ -10,5 +10,6 @@ namespace SBA.Expense.Models{
         public string FileName {get;set;}
         public string UserId {get;set;}
         public string ReferenceBlobAdress {get;set;}
+        public decimal Amount {get;set;}
     }
 }

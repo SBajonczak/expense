@@ -37,6 +37,17 @@ namespace SBA.Expense
                 return new AzureBlobRepo(Configuration["ConnectionString:AzureStorage"]);
             });
 
+            services.AddCors(options =>
+               {
+                   options.AddPolicy("expense.origin",
+                   builder =>
+                   {
+                       builder.WithOrigins("https://localhost:3000",
+                                "https://localhost:5000")
+                                           .AllowAnyHeader()
+                                           .AllowAnyMethod();
+                   });
+               });
             services.AddControllers();
         }
 
@@ -51,6 +62,7 @@ namespace SBA.Expense
             }
             app.UseRouting();
             app.UseAuthorization();
+            app.UseCors("expense.origin");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

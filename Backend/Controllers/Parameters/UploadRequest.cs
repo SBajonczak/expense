@@ -17,6 +17,7 @@ namespace SBA.Expense.Controllers.Parameters
 
         public string UserID { get; set; }
         public Guid InvoiceId { get; set; }
+        public decimal Amount {get;set;}
         public IFormFile File { get; set; }
 
         public AttachReceipt ToAttachReceipt()
@@ -26,6 +27,7 @@ namespace SBA.Expense.Controllers.Parameters
             s.Position = 0;
             AttachReceipt returnValue = new AttachReceipt(Guid.NewGuid(), InvoiceId, UserID, s.ToArray());
             returnValue.FileName= File.FileName;
+            returnValue.Amount = this.Amount;
             return returnValue;
         }
 

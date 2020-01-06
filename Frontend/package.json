@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@grapecity/wijmo.all": "^5.20193.637",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
@@ -17,17 +18,18 @@
     "react-dom": "^16.12.0",
     "react-moment": "^0.9.7",
     "react-scripts": "3.3.0",
+    "tailwind-react": "0.0.0",
     "typescript": "^3.7.4"
   },
   "scripts": {
-    "start": "npm run css && react-scripts start",
-    "prestart": "rm ./node_modules/webpack-dev-server/ssl/server.pem && cp -f ./cert/server.pem ./node_modules/webpack-dev-server/ssl",
-    "build": "react-scripts build",
+    "start": "npm run tailwind:css && react-scripts start",
+    "ssprestart": "rm ./node_modules/webpack-dev-server/ssl/server.pem && cp -f ./cert/server.pem ./node_modules/webpack-dev-server/ssl",
+    "build": "npm run tailwind:css && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "css": "npm run tailwind && npm run purgecss",
     "purgecss": "purgecss -c purgecss.config.js -o src",
-    "tailwind": "tailwind build src/tailwind.src.css -c tailwind.config.js -o src/tailwind.css"
+    "tailwind:css": "tailwind build src/tailwind.css -c tailwind.config.js -o src/index.css"
   },
   "eslintConfig": {
     "extends": "react-app"

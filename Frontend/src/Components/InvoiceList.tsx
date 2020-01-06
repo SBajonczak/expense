@@ -1,8 +1,10 @@
 import { Component } from 'react';
 import axios from 'axios';
+import '@grapecity/wijmo.styles/wijmo.css';
+
 import Invoice from '../Models/Invoice';
 import React from 'react';
-import Moment from 'react-moment';
+import { FlexGrid, FlexGridColumn, FlexGridCellTemplate } from '@grapecity/wijmo.react.grid';
 
 interface State {
   invoices: Invoice[]
@@ -24,23 +26,28 @@ export default class InvoiceList extends Component<{}, State> {
 
     });
   }
-  render() {
-    console.log(this.state.invoices);
-    const items: any[] = [];
-    this.state.invoices
-      .forEach((item: Invoice) => {
-        items.push(
-          <div className="flex mb-4" key={item.id}>
-            <div className="w-1/3 bg-gray-400 h-12"><Moment format="DD.MM.YYYY">{item.date}</Moment></div>
-            <div className="w-1/3 bg-gray-500 h-12">{item.userId}</div>
-            <div className="w-1/3 bg-gray-400 h-12">{item.invoiceState}</div>
-          </div>
-        );
-      }
-      )
 
+  render() {
     return (
-      <div>{items}</div>
+      <div className="">
+        <FlexGrid itemsSource={this.state.invoices}>
+          <FlexGridColumn header="Datum" binding="date" width={280} format="'DD.MM.YYYY'" />
+          <FlexGridColumn header="Abrechnungssumme" binding="total" width="1*" format="n" />
+          <FlexGridColumn header="" binding="" width="*">
+            <FlexGridCellTemplate
+              cellType="Cell"
+              template={(context: any) => {
+                return <React.Fragment>
+                  <div>
+                  <button  key={context.id} className="bg-yellow-500 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full">Details</button>
+                  </div>
+                </React.Fragment>
+              }}
+
+            />
+          </FlexGridColumn>
+        </FlexGrid>
+      </div>
     );
 
 
